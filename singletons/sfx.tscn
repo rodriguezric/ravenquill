@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://lpjm6655t8p5"]
+
+[ext_resource type="Script" path="res://singletons/sfx.gd" id="1_ha2gv"]
+
+[node name="sfx" type="AudioStreamPlayer"]
+script = ExtResource("1_ha2gv")
