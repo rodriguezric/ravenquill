@@ -30,6 +30,7 @@ offset_right = 323.0
 offset_bottom = 573.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 0
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer"]
 layout_mode = 2
@@ -46,23 +47,14 @@ theme = SubResource("Theme_imsu7")
 text = "RAVEN QUILL"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_bottom = 11
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-focus_neighbor_top = NodePath("../QuitButton")
-focus_neighbor_bottom = NodePath("../OptionsButton")
 text = "START"
-
-[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../StartButton")
-focus_neighbor_bottom = NodePath("../QuitButton")
-text = "OPTIONS"
-
-[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../OptionsButton")
-focus_neighbor_bottom = NodePath("../StartButton")
-text = "QUIT"
