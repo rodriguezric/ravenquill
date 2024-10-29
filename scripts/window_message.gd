@@ -8,6 +8,7 @@ extends Control
 @onready var line_edit_submit: Button = $LineEditContainer/LineEditSubmit
 @onready var line_edit: LineEdit = $LineEditContainer/LineEdit
 @onready var line_edit_container: HBoxContainer = $LineEditContainer
+@onready var advance_button: Button = $AdvanceButton
 
 signal closed
 signal finished_displaying_text
@@ -56,11 +57,13 @@ func show_menu(_text: String, options: Array, scrolling := true):
         show_text(_text)
     await finished_displaying_text
     active = false
+    advance_button.visible = false
 
     v_menu.visible = true
     v_menu.show_options(options)
     var option_idx = await v_menu.option_selected
     active = true
+    advance_button.visible = true
 
     option_selected.emit(option_idx)
 
@@ -88,16 +91,19 @@ func _ready() -> void:
     label.autowrap_mode = TextServer.AUTOWRAP_WORD
     timer.timeout.connect(_on_timer_timeout)
     line_edit_submit.button_down.connect(_on_line_edit_submit)
+    advance_button.button_down.connect(_on_advance_button_down)
+
+func advance_text():
+    if finished:
+        visible = false
+        emit_signal("closed")
+    else:
+        label.visible_characters = label.get_total_character_count()
 
 func _process(_delta: float) -> void:
     if visible and active:
         if Input.is_action_just_pressed("ui_accept"):
-            if finished:
-                visible = false
-                emit_signal("closed")
-            else:
-                label.visible_characters = label.get_total_character_count()
-
+            advance_text()
 
 func _on_timer_timeout() -> void:
     if visible and not finished:
@@ -110,3 +116,14 @@ func _on_timer_timeout() -> void:
 func _on_line_edit_submit():
     line_edit.text_submitted.emit()
     closed.emit()
+
+func _on_advance_button_down():
+    if line_edit_container.visible:
+        line_edit.text_submitted.emit()
+    elif inventory.visible:
+        window_message.visible = true
+        active = true
+        inventory.visible = false
+        option_selected.emit(-1)
+    else:
+        advance_text()

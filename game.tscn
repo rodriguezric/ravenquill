@@ -34,4 +34,3 @@ theme_override_font_sizes/font_size = 21
 text = "THE END"
 
 [node name="WindowMessage" parent="CanvasLayer" instance=ExtResource("2_inb0o")]
-mouse_filter = 1
