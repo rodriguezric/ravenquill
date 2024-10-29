@@ -41,11 +41,13 @@ func prompt(_text: String, scrolling := true):
         show_text(_text)
     await finished_displaying_text
     active = false
+    advance_button.visible = false
 
     line_edit_container.visible = true
     line_edit.grab_focus()
     await line_edit.text_submitted
     active = true
+    advance_button.visible = true
 
     line_edit_container.visible = false
     return line_edit.text
@@ -118,9 +120,7 @@ func _on_line_edit_submit():
     closed.emit()
 
 func _on_advance_button_down():
-    if line_edit_container.visible:
-        line_edit.text_submitted.emit()
-    elif inventory.visible:
+    if inventory.visible:
         window_message.visible = true
         active = true
         inventory.visible = false
