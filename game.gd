@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var window_message: Control = $WindowMessage
+@onready var window_message: Control = $CanvasLayer/WindowMessage
 @onready var line_edit: LineEdit = $LineEdit
 @onready var the_end_label: Label = $"CanvasLayer/CenterContainer/the end"
 

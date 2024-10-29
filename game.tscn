@@ -14,8 +14,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(0, 0, 0, 1)
 
-[node name="WindowMessage" parent="." instance=ExtResource("2_inb0o")]
-
 [node name="Enemy" type="Node" parent="."]
 script = ExtResource("3_tvjkd")
 
@@ -34,3 +32,6 @@ visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 text = "THE END"
+
+[node name="WindowMessage" parent="CanvasLayer" instance=ExtResource("2_inb0o")]
+mouse_filter = 1

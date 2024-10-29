@@ -2,10 +2,12 @@ extends Control
 
 @onready var label: Label = $WindowMessage/MarginContainer/Label
 @onready var timer: Timer = $WindowMessage/Timer
-@onready var line_edit: LineEdit = $LineEdit
 @onready var v_menu: VBoxContainer = $VMenu
 @onready var inventory: GridContainer = $MarginContainer/Inventory
 @onready var window_message: MarginContainer = $WindowMessage
+@onready var line_edit_submit: Button = $LineEditContainer/LineEditSubmit
+@onready var line_edit: LineEdit = $LineEditContainer/LineEdit
+@onready var line_edit_container: HBoxContainer = $LineEditContainer
 
 signal closed
 signal finished_displaying_text
@@ -39,12 +41,12 @@ func prompt(_text: String, scrolling := true):
     await finished_displaying_text
     active = false
 
-    line_edit.visible = true
+    line_edit_container.visible = true
     line_edit.grab_focus()
     await line_edit.text_submitted
     active = true
 
-    line_edit.visible = false
+    line_edit_container.visible = false
     return line_edit.text
 
 func show_menu(_text: String, options: Array, scrolling := true):
@@ -85,6 +87,7 @@ func _ready() -> void:
     label.anchor_right = 1
     label.autowrap_mode = TextServer.AUTOWRAP_WORD
     timer.timeout.connect(_on_timer_timeout)
+    line_edit_submit.button_down.connect(_on_line_edit_submit)
 
 func _process(_delta: float) -> void:
     if visible and active:
@@ -103,3 +106,7 @@ func _on_timer_timeout() -> void:
             finished = true
             finished_displaying_text.emit()
             timer.stop()
+
+func _on_line_edit_submit():
+    line_edit.text_submitted.emit()
+    closed.emit()
