@@ -27,8 +27,9 @@ var rat = {
     "description": "A glint of obsidian eyes reflects the faintest light, fixed on you with chilling indifference.",
     "verbs": ["bites", "scratches"],
     "atk": 3,
-    "hp": 10,
-    "fire_weakness_flg": false
+    "hp": 5,
+    "fire_weakness_flg": false,
+    "easy_escape": false
 }
 
 var slime = {
@@ -37,7 +38,8 @@ var slime = {
     "verbs": ["splashes on", "oozes on"],
     "atk": 4,
     "hp": 7,
-    "fire_weakness_flg": true
+    "fire_weakness_flg": true,
+    "easy_escape": false
 }
 
 var madman = {
@@ -46,7 +48,8 @@ var madman = {
     "verbs": ["punches", "grabs"],
     "atk": 3,
     "hp": 12,
-    "fire_weakness_flg": false
+    "fire_weakness_flg": false,
+    "easy_escape": true
 }
 
 var enemies = [rat, slime, madman]
@@ -57,7 +60,8 @@ var woman = {
     "verbs": ["spits at", "screams at", "vomits on", "chokes"],
     "atk": 3,
     "hp": 8,
-    "fire_weakness_flg": true
+    "fire_weakness_flg": true,
+    "easy_escape": false,
 }
 
 
@@ -252,7 +256,7 @@ func uncertainty():
     window_message.scroll_text("Was this all in your mind, after all?")
     await window_message.closed
 
-    the_end()
+    await the_end()
 
 
 func price():
@@ -296,7 +300,7 @@ func refused_quill():
     VFX.flash(Color.RED)
     await get_tree().create_timer(1).timeout
 
-    the_end()
+    await the_end()
 
 func escape():
     Music.play_track(Music.AMBIENT)
@@ -316,7 +320,7 @@ func escape():
     window_message.scroll_text("The price of the Quill's protection will come due, and you can only pray that you will be strong enough to pay it when the time comes.")
     await window_message.closed
 
-    the_end()
+    await the_end()
 
 
 func the_end():
@@ -382,7 +386,8 @@ func streets():
         window_message.scroll_text("Finally, you stood bathed in the alien light, your fragile form dwarfed by its immensity. Tears streamed down your face, a mixture of terror and elation. You had glimpsed the abyss, yet emerged, forever marked but unbroken. The sun, both beautiful and terrible, was a reminder: sanity was fragile, the void ever-present, but even in the face of cosmic horror, there was defiance, a flicker of hope in the encroaching madness.")
         await window_message.closed
 
-        the_end()
+        await the_end()
+
 
     elif CTX.streets_counter == 4:
         text = "Sun cracks, birthing eldritch light. Horizon bleeds, oozing madness. Shadows writhe, screaming defiance. Hope flickers, devoured by the hungry sky."
@@ -449,13 +454,14 @@ func battle_scene(enemy=null):
             window_message.scroll_text("You attempt to flee and...")
             await window_message.closed
 
-            if rng.randi_range(1, 6) > 2:
+            if CTX.enemy.easy_escape or rng.randi_range(1, 6) > 2:
                 window_message.scroll_text("You manage to escape.")
                 await window_message.closed
 
                 battle_scene_completed.emit()
                 CTX.battle_flg = false
                 return
+
             window_message.scroll_text("The " + CTX.enemy.name + " prevents you from escapng.")
             await window_message.closed
 
